@@ -48,7 +48,6 @@ export class CoursesComponent {
 
   onAdd(){
     this.router.navigate(['new'], {relativeTo: this.route});
-    console.log('clicou');
   }
 
 }
