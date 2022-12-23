@@ -23,7 +23,7 @@ export class CourseFormComponent {
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location) {
-    // this.form
+
   }
 
   ngOnInit() {
