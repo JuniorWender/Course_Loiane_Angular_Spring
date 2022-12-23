@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { CoursesService } from './../services/courses.service';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-course-form',
@@ -12,16 +12,22 @@ import { CoursesService } from './../services/courses.service';
 })
 export class CourseFormComponent {
 
-  form: FormGroup;
+  form = this.formBuilder.group({
+    name: [''],
+    category: ['']
+    // name: new FormControl<string>(''), // Declarar assim é a msm coisa que o debaixo
+    // name: new FormControl('',{ nonNullable: true }),
+  });
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: NonNullableFormBuilder, // Isso é a mesma coisa que => name: new FormControl('',{ nonNullable: true }), / porém para todos os campos
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location) {
-    this.form = this.formBuilder.group({
-      name: [null],
-      category: [null]
-    });
+    // this.form
+  }
+
+  ngOnInit() {
+
   }
 
   onCancel() {
