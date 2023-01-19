@@ -1,7 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { Course } from './../../model/course';
 
 import { CoursesService } from '../../services/courses.service';
 
@@ -13,6 +15,7 @@ import { CoursesService } from '../../services/courses.service';
 export class CourseFormComponent {
 
   form = this.formBuilder.group({
+    _id: [''],
     name: [''],
     category: ['']
     // name: new FormControl<string>(''), // Declarar assim é a msm coisa que o debaixo
@@ -22,12 +25,18 @@ export class CourseFormComponent {
   constructor(private formBuilder: NonNullableFormBuilder, // Isso é a mesma coisa que => name: new FormControl('',{ nonNullable: true }), / porém para todos os campos
     private service: CoursesService,
     private snackBar: MatSnackBar,
-    private location: Location) {
+    private location: Location,
+    private route: ActivatedRoute) {
 
   }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
+    const course: Course = this.route.snapshot.data['course'];
+    this.form.setValue({
+      _id: course._id,
+      name: course.name,
+      category: course.category
+    });
   }
 
   onCancel() {
@@ -35,6 +44,7 @@ export class CourseFormComponent {
   }
 
   onSubmit() {
+    console.log(this.form.value);
     this.service.save(this.form.value)
     .subscribe(result => this.onSuccess(), error => this.onError());
   }
